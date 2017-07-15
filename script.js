@@ -1,6 +1,7 @@
 var grid = [];
 var idCell = 0;
 var nrDivs = 0;
+var interval;
 
 function newGrid (divs){
 	var idCell = 0;
@@ -97,27 +98,18 @@ function nextGeneration(){
 	for(var i = 0; i < nrDivs; i++){
 		newGeneration[i] = [];
 		for(var j = 0; j < nrDivs; j++) {
-			console.log(i + ' ' + j);
-			console.log(aliveNeighbours(i,j));
-			var alive = aliveNeighbours(i, j);
-			console.log(alive < 2 || alive > 3);
-			console.log(aliveNeighbours(i, j) < 2 || aliveNeighbours(i, j) > 3);
 			if(grid[i][j]['alive']){
 				if(aliveNeighbours(i, j) < 2 || aliveNeighbours(i, j) > 3){
-					console.log('over/underpopulation ' + i + ' ' + j);
 					newGeneration[i][j] = {id:grid[i][j]['id'], alive:false};
 				} else {
-					console.log('keeps true ' + i + ' ' + j);
 					newGeneration[i][j] = {id:grid[i][j]['id'], alive:true};
 				}
 
 			} else {
 				
 				if(aliveNeighbours(i, j) == 3){
-					console.log('reproduction ' + i + ' ' + j);
 					newGeneration[i][j] = {id:grid[i][j]['id'], alive:true};
 				} else {
-					console.log('keeps false ' + i + ' ' + j);
 					newGeneration[i][j] = {id:grid[i][j]['id'], alive:false};
 				}
 
@@ -125,7 +117,6 @@ function nextGeneration(){
 		}
 	}
 	grid = newGeneration;
-	console.log(newGeneration);
 	return newGeneration;
 }
 
@@ -154,10 +145,12 @@ function defaultGrid(){
 		var i = c[0];
 		var j = c[1];
 		grid[i][j]['alive'] = !grid[i][j]['alive'];
-		
-		//console.log(isAlive(divId));
-		//console.log(aliveNeighbours(divId));
 	});
+}
+
+function run(){
+	var next = nextGeneration();
+	showGrid(next);
 }
 
 function askSize(){
@@ -177,22 +170,25 @@ function main (){
 	init(16);
 
 	$('#clear').click(function(){
+		clearInterval(interval);
 		init(16);
 	});
 
 	$('#size').click(function(){
+		clearInterval(interval);
 		askSize();
 	});
 
 	$('#next').click(function(){
-		var next = nextGeneration();
-		showGrid(next);
-		console.log("new grid");
-		console.log(grid);
+		clearInterval(interval);
+		run();
 	});
 
-	//console.log(getCoordinates(0));
-	//console.log(getCoordinates(300));
+	$('#run').click(function(){
+		if(!deadGrid()){
+			interval = setInterval(run, 500);
+		}
+	});
 }
 
 $(document).ready(main);
