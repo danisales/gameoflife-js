@@ -1,12 +1,12 @@
 var grid = [];
-var nrDivs = 0;
+var nrRows = 0;
 var interval = null;
 
 function newGrid (divs){
 	var id = 0;
 	var size = 592;
 	var newSize = (+size) / (+divs) - 2;
-	nrDivs = divs;
+	nrRows = divs;
 	for(var i = 0; i < divs; i++){
 		grid[i] = []
 		for(var j = 0; j < divs; j++) {
@@ -27,9 +27,9 @@ function getRandomInt(min, max) {
 function randomGrid(){
 	var grid = []
 	var id = 0;
-	for(var i = 0; i < nrDivs; i++){
+	for(var i = 0; i < nrRows; i++){
 		grid[i] = []
-		for(var j = 0; j < nrDivs; j++){
+		for(var j = 0; j < nrRows; j++){
 			var r = getRandomInt(0,4);
 			if(r == 0) {
 				grid[i][j] = {id:id, alive:true};
@@ -44,8 +44,8 @@ function randomGrid(){
 }
 
 function getCoordinates(id){
-	for(var i = 0; i < nrDivs; i++){
-		for(var j = 0; j < nrDivs; j++){
+	for(var i = 0; i < nrRows; i++){
+		for(var j = 0; j < nrRows; j++){
 			if(grid[i][j]['id'] == id){
 				return [i, j];
 			}
@@ -55,8 +55,8 @@ function getCoordinates(id){
 }
 
 function isAlive(id){
-	for(var i = 0; i < nrDivs; i++){
-		for(var j = 0; j < nrDivs; j++){
+	for(var i = 0; i < nrRows; i++){
+		for(var j = 0; j < nrRows; j++){
 			if(grid[i][j]['id'] == id){
 				return grid[i][j]['alive'];
 			}
@@ -101,12 +101,12 @@ function aliveNeighbours(x, y){
 }
 
 function insideGrid(i, j){
-	return i >= 0 && i < nrDivs && j >= 0 && j < nrDivs;
+	return i >= 0 && i < nrRows && j >= 0 && j < nrRows;
 }
 
 function deadGrid(){
-	for(var i = 0; i < nrDivs; i++){
-		for(var j = 0; j < nrDivs; j++){
+	for(var i = 0; i < nrRows; i++){
+		for(var j = 0; j < nrRows; j++){
 			if(grid[i][j]['alive']){
 				return false;
 			}
@@ -117,9 +117,9 @@ function deadGrid(){
 
 function nextGeneration(){
 	var newGeneration = [];
-	for(var i = 0; i < nrDivs; i++){
+	for(var i = 0; i < nrRows; i++){
 		newGeneration[i] = [];
-		for(var j = 0; j < nrDivs; j++) {
+		for(var j = 0; j < nrRows; j++) {
 			if(grid[i][j]['alive']){
 				if(aliveNeighbours(i, j) < 2 || aliveNeighbours(i, j) > 3){
 					newGeneration[i][j] = {id:grid[i][j]['id'], alive:false};
@@ -144,8 +144,8 @@ function nextGeneration(){
 
 function showGrid(newGrid){
 	var id = 0;
-	for(var i = 0; i < nrDivs; i++){
-		for(var j = 0; j < nrDivs; j++) {
+	for(var i = 0; i < nrRows; i++){
+		for(var j = 0; j < nrRows; j++) {
 			var element = '#' + id;
 			$div = $(element);
 			if(newGrid[i][j]['alive']){
@@ -182,6 +182,9 @@ function run(){
 
 function askSize(){
 	var s = prompt("Number of rows/columns");
+	if(s == undefined){
+		s = nrRows;
+	}
 	$('.container').empty();
 	newGrid(s);
 	defaultGrid();
@@ -198,7 +201,7 @@ function main (){
 
 	$('#clear').click(function(){
 		clearInterval(interval);
-		init(nrDivs);
+		init(nrRows);
 	});
 
 	$('#size').click(function(){
