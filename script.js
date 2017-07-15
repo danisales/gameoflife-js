@@ -1,20 +1,19 @@
 var grid = [];
-var idCell = 0;
 var nrDivs = 0;
-var interval;
+var interval = null;
 
 function newGrid (divs){
-	var idCell = 0;
+	var id = 0;
 	var size = 592;
 	var newSize = (+size) / (+divs) - 2;
 	nrDivs = divs;
 	for(var i = 0; i < divs; i++){
 		grid[i] = []
 		for(var j = 0; j < divs; j++) {
-			$div = $('<div class="grid"></div>').attr('id', idCell);
+			$div = $('<div class="grid"></div>').attr('id', id);
 			$(".container").append($div);
-			grid[i][j] = {id: idCell, alive: false};
-			idCell++;
+			grid[i][j] = {id: id, alive: false};
+			id++;
 		}
 	}
 	$(".grid").height(newSize);
