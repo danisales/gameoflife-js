@@ -4,7 +4,7 @@
 
 .btn {
 	height: 33px;
-	width: 90px;
+	width: 120px;
 	background-color: #4387fd;
 	text-align: center;
 	color: #ffffff;
@@ -44,4 +44,8 @@
 
 .highlight-click {
 	opacity: 0.6;
+}
+
+.dead-cell {
+	opacity: 0.25;
 }
