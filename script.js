@@ -198,7 +198,7 @@ function main (){
 
 	$('#clear').click(function(){
 		clearInterval(interval);
-		init(16);
+		init(nrDivs);
 	});
 
 	$('#size').click(function(){
