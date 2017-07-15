@@ -21,6 +21,29 @@ function newGrid (divs){
 	$(".grid").width(newSize);
 }
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function randomGrid(){
+	var grid = []
+	var id = 0;
+	for(var i = 0; i < nrDivs; i++){
+		grid[i] = []
+		for(var j = 0; j < nrDivs; j++){
+			var r = getRandomInt(0,4);
+			if(r == 0) {
+				grid[i][j] = {id:id, alive:true};
+			} else {
+				grid[i][j] = {id:id, alive:false};
+			}
+			id++;
+		}
+	}
+	this.grid = grid;
+	return grid;
+}
+
 function getCoordinates(id){
 	for(var i = 0; i < nrDivs; i++){
 		for(var j = 0; j < nrDivs; j++){
@@ -148,13 +171,18 @@ function defaultGrid(){
 	});
 }
 
+function next(){
+	showGrid(nextGeneration());
+}
+
 function run(){
-	var next = nextGeneration();
-	showGrid(next);
+	if(!deadGrid()){
+		interval = setInterval(next, 500);
+	}
 }
 
 function askSize(){
-	var s = prompt("Size of grid");
+	var s = prompt("Number of rows/columns");
 	$('.container').empty();
 	newGrid(s);
 	defaultGrid();
@@ -181,13 +209,16 @@ function main (){
 
 	$('#next').click(function(){
 		clearInterval(interval);
-		run();
+		next();
 	});
 
 	$('#run').click(function(){
-		if(!deadGrid()){
-			interval = setInterval(run, 500);
-		}
+		run();
+	});
+
+	$('#random').click(function(){
+		showGrid(randomGrid());
+		run();
 	});
 }
 
